@@ -14,13 +14,10 @@ pipeline {
         stage('Try SSH') {
             steps {
                 sshagent(['ssh-to-vm']) {
-                    sh '''
-                        [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
-                        ssh-keyscan -t rsa,dsa example.com >> ~/.ssh/known_hosts
-                        ssh kazami@192.168.56.2
-                        hostnamectl
-                        exit
-                    '''
+                 sh """ssh -tt -o StrictHostKeyChecking=no kazami@192.168.56.2 << EOF  2>&1                           
+                         hostnamectl
+                         exit
+                         EOF"""
                  }
             }
 
