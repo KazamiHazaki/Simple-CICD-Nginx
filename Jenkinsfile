@@ -11,5 +11,16 @@ pipeline {
                 echo 'Hello, this is a test pipeline! Step 2'
             }
         }
+        stage('Try SSH') {
+            steps {
+                sshagent(['ssh-to-vm']) {
+                 sh """ssh -tt -o StrictHostKeyChecking=no sinergimp@172.16.1.128 << EOF  2>&1                           
+                         hostnamectl
+                         exit
+                         EOF"""
+                 }
+            }
+
+        }
     }
 }
